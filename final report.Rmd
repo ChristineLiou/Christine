@@ -25,15 +25,15 @@ library(xts)
 ###2.1 loading data
 #### Five observed sites near the solar generators. Each of the sites recorded multiple information, and the most important variable is SWDOWN and PAC. We combined all the sites to a big data frame.  
 ```{r}
-chunghwa <- read.csv("./Data_1105/14.csv")
+chunghwa <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/14.csv")
 chunghwa$location <- "chunghwa"
-dreamhouse <- read.csv("./Data_1105/19.csv")
+dreamhouse <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/19.csv")
 dreamhouse$location <- "dreamhouse"
-futurehouse <- read.csv("./Data_1105/18.csv")
+futurehouse <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/18.csv")
 futurehouse$location <- "futurehouse"
-xinglongmarket <- read.csv("./Data_1105/39.csv")
+xinglongmarket <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/39.csv")
 xinglongmarket$location <- "xinglongmarket"
-nuclearresearch <- read.csv("./Data_1105/40.csv")
+nuclearresearch <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/40.csv")
 nuclearresearch$location <- "nuclearresearch"
 cbso <- rbind(chunghwa,dreamhouse,futurehouse,xinglongmarket,nuclearresearch)
 rm(chunghwa,dreamhouse,futurehouse,xinglongmarket,nuclearresearch)
