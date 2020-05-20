@@ -1,0 +1,1001 @@
+---
+title: "Renewable energy generator forecast"
+output: html_document
+---
+
+# 1. About the research
+#### The data from Electronics Testing Center, Taiwan. Due to the limited dimensions, date from solar generator included DOWNWARD SHORT WAVE FLUX AT GROUND SURFACE(SWDOWN) and electricity production (PAC), and data from wind drive generator included 10 meter high of wind speed(WS10m), 65 meter high of wind speed (WS65m) and electricity production(PAC).   
+#### 本次研究案電子檢驗中心提供兩種發電數據:風力發電及太陽能發電，由於本次提供數據維度有限，太陽能發電的數據僅能從地表輻射(SWDOWN)和發電量(PAC)觀察;風力發電僅能參考發電機10公尺觀測到的風速(WS10m)、65公尺觀測到的風速(WS65m)及發電量(PAC)三個變數。
+
+# 2. Data preparation for solar generator
+
+#### Load the library all we need in this study first. 
+```{r}
+library(lubridate)
+library(dygraphs)
+library(ggplot2)
+library(caret)
+library(corrplot)
+library(Metrics)
+library(reshape2)
+library(dplyr)
+library(xts)
+```
+
+### 2.1 loading data
+#### Five observed sites near the solar generators. Each of the sites recorded multiple information, and the most important variable is SWDOWN and PAC. We combined all the sites to a big data frame.  
+```{r}
+chunghwa <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/14.csv")
+chunghwa$location <- "chunghwa"
+dreamhouse <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/19.csv")
+dreamhouse$location <- "dreamhouse"
+futurehouse <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/18.csv")
+futurehouse$location <- "futurehouse"
+xinglongmarket <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/39.csv")
+xinglongmarket$location <- "xinglongmarket"
+nuclearresearch <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/40.csv")
+nuclearresearch$location <- "nuclearresearch"
+cbso <- rbind(chunghwa,dreamhouse,futurehouse,xinglongmarket,nuclearresearch)
+rm(chunghwa,dreamhouse,futurehouse,xinglongmarket,nuclearresearch)
+
+names(cbso)
+names(cbso)[c(1:2,4:8,12:17)] 
+
+cbso <- cbso[,-c(1:2,4:8,12:17)] 
+summary(cbso)
+```
+
+
+### 2.2 dealing time series 
+#### Shift the data frame to be time series format. 
+```{r}
+head(cbso$MYTIME)
+
+date <- substr(cbso$MYTIME, 1,10)
+time <- paste(substr(cbso$MYTIME,12, 13),":00:00",sep = "") 
+cbso$MYTIME <- as.POSIXct(paste(date,time, sep = " "))
+
+cbso$location <- factor(cbso$location)
+
+summary(cbso)
+```
+
+### 2.3 remove missing data
+#### The missing data were recorded in "-999", therefore, we removed all the data showed "-999".
+```{r}
+table(cbso$WS65M=="-999")
+cbso <- subset(cbso,WS65M!="-999")
+summary(cbso)
+```
+
+### 2.4 standardize data
+#### Standardized the numeriacal data.
+```{r}
+cbso_sc <- cbso[,c(2:5)]
+cbso_sc <- scale(cbso_sc)
+cbso_z <- as.data.frame(cbso_sc)
+cbso_z <- cbind(cbso$MYTIME,cbso$location,cbso_z)
+colnames(cbso_z) <- c("mytime","location","ws10m","ws65m","swdown","pac")
+summary(cbso_z)
+```
+
+# 3. Data visulation for solar generator
+#### Preparing the data frame to draw prictures. 
+```{r}
+cbso_sc <- cbso_z[,-2]
+lcbso_sc <- melt(cbso_sc, id.vars='mytime', variable.name = "variable")
+lcbso_sc$month <- factor(month(lcbso_sc$mytime))
+lcbso_sc$day <- factor(day(lcbso_sc$mytime)) 
+lcbso_sc$hour <- factor(hour(lcbso_sc$mytime))
+
+DF_hour <- aggregate(value ~ hour*variable, data = lcbso_sc, FUN = mean)
+DF_month <- aggregate(value ~ month*variable, data = lcbso_sc, FUN = mean)
+day <- subset(DF_hour,DF_hour$hour %in% c(6:18))
+night <- subset(DF_hour,DF_hour$hour %in% c(0:5,19:23))
+```
+
+### 3.1 all solar data for different time range 
+#### As the picture shows below, SWDOWN and PAC have the similar path during one day. These two variables rise when the sunrise, and decline to zero after the sunset. 
+```{r}
+mytheme <- theme_grey(base_family="STKaiti")
+ggplot(data = DF_hour, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme + theme(axis.text.x=element_text(angle=45, vjust=0.5)) + labs(x = "Time(hour)") + labs(y = "ws,swdown and pac") + ggtitle("solar generator for every hour (by mean)")
+```
+
+#### Despite there are only three month of data, we can still find out that SWDOWN and PAC data in Sep to Nov go down smoothly, because of the shorter day light in winter. 
+```{r}
+mytheme <- theme_grey(base_family="STKaiti")
+ggplot(data = DF_month, mapping = aes(x = month, y = value, color = variable, group = variable)) + geom_line()  + mytheme +  labs(x = "Time(month)") + labs(y = "ws,swdown and pac")+ ggtitle("solar generator for month (by mean)")
+```
+
+### 3.2 solar data visulation for different location 
+#### Three month of the PAC data were draw by different locations. As the picture showed below, the red line (chungwa) were higher than other locations and the xinglongmarket was the lowest.
+
+```{r}
+pac_graph <- ggplot(cbso_z, aes(x=mytime, y=pac, colour = location, group = location)) + geom_line() + ggtitle("發電量(PAC)")+  labs(x = "Time")+ labs(y = "electricity production(PAC)")
+pac_graph
+```
+
+#### different location of the generators
+#### 
+```{r}
+chunghwa <- filter(cbso_z, cbso_z$location=="chunghwa")
+chunghwa_graph <- chunghwa[,c(1,5,6)]
+lchunghwa <- melt(chunghwa_graph,id.vars = "mytime",measure.vars = colnames(chunghwa_graph[-1]))
+lchunghwa$hour <- factor(hour(lchunghwa$mytime))
+DF_chunghwa <- aggregate(value ~ hour*variable, data = lchunghwa, FUN = mean)
+mytheme <- theme_grey(base_family="STKaiti")
+graph_chunghwa <- ggplot(data = DF_chunghwa, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme  + labs(x = "Time(hour)") + labs(y = "SWDOWN and PAC")+ ggtitle("Chunghwa") + scale_color_discrete(labels=c("swdown(W/m2)","PAC(KW)"))
+graph_chunghwa
+```
+
+```{r}
+chunghwa_xts <-  xts(chunghwa_graph, order.by = chunghwa_graph$mytime) 
+
+dygraph(chunghwa_xts,main = " Chunghwa SWDOWN and PAC + PAC") %>%
+  dyAxis("y",valueRange = c(-0.7:5)) %>%
+  dyRangeSelector()
+```
+
+
+```{r}
+dreamhouse <- filter(cbso_z, cbso_z$location=="dreamhouse")
+dreamhouse_graph <- dreamhouse[,c(1,5,6)]
+ldreamhouse <- melt(dreamhouse_graph,id.vars = "mytime",measure.vars = colnames(chunghwa_graph[-1]))
+ldreamhouse$hour <- factor(hour(ldreamhouse$mytime))
+DF_dreamhouse <- aggregate(value ~ hour*variable, data = ldreamhouse, FUN = mean)
+graph_dreamhouse <- ggplot(data = DF_dreamhouse, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme+ labs(x = "Time(hour)") + labs(y = "SWDOWN and PAC")+ ggtitle("Dreamhouse")+ scale_color_discrete(labels=c("swdown(W/m2)","PAC(KW)"))
+graph_dreamhouse
+```
+
+```{r}
+futurehouse <- filter(cbso_z, cbso_z$location=="futurehouse")
+futurehouse_graph <- futurehouse[,c(1,5,6)]
+lfuturehouse <- melt(futurehouse_graph,id.vars = "mytime",measure.vars = colnames(futurehouse_graph[-1]))
+lfuturehouse$hour <- factor(hour(lfuturehouse$mytime))
+DF_futurehouse <- aggregate(value ~ hour*variable, data = lfuturehouse, FUN = mean)
+graph_futurehouse <- ggplot(data = DF_futurehouse, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme + labs(x = "Time(hour)") + labs(y = "SWDOWN and PAC")+ ggtitle("Futurehouse")+ scale_color_discrete(labels=c("swdown(W/m2)","PAC(KW)"))
+graph_futurehouse
+```
+
+```{r}
+nuclearresearch <- filter(cbso_z, cbso_z$location=="nuclearresearch")
+nuclearresearch_graph <- futurehouse[,c(1,5,6)]
+lnuclearresearch <- melt(nuclearresearch_graph,id.vars = "mytime",measure.vars = colnames(nuclearresearch_graph[-1]))
+lnuclearresearch$hour <- factor(hour(lnuclearresearch$mytime))
+DF_nuclearresearch <- aggregate(value ~ hour*variable, data = lnuclearresearch, FUN = mean)
+graph_nuclearresearch <- ggplot(data = DF_nuclearresearch, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme  + labs(x = "Time(hour)") + labs(y = "SWDOWN and PAC")+ ggtitle("Nuclearresearch")+ scale_color_discrete(labels=c("swdown(W/m2)","PAC(KW)"))
+graph_nuclearresearch
+```
+
+
+```{r}
+xinglongmarket <- filter(cbso_z, cbso_z$location=="xinglongmarket")
+xinglongmarket_graph <-  xinglongmarket[,c(1,5,6)]
+lxinglongmarket <- melt(xinglongmarket_graph,id.vars = "mytime",measure.vars = colnames(xinglongmarket_graph[-1]))
+lxinglongmarket$hour <- factor(hour(lxinglongmarket$mytime))
+DF_xinglongmarket <- aggregate(value ~ hour*variable, data = lxinglongmarket, FUN = mean)
+graph_xinglongmarket <- ggplot(data = DF_xinglongmarket, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme  + labs(x = "Time(hour)") + labs(y = "SWDON and PAC")+ ggtitle("Xinglongmarket")+ scale_color_discrete(labels=c("swdown(W/m2)","PAC(KW)"))
+graph_xinglongmarket
+```
+
+### 3.3 correlation between PAC and SWDOWN (ex. Chunghwa)
+
+```{r}
+chunghwa_cor <- chunghwa[,-c(1:2)]
+head(nearZeroVar(chunghwa_cor,saveMetrics = TRUE))
+names(chunghwa_cor)[nearZeroVar(chunghwa_cor,saveMetrics = TRUE)$zeroVar]
+
+correlations <- cor(chunghwa_cor)
+dim(correlations)
+corrplot(correlations,order = "hclust",tl.cex = 0.5)
+```
+
+# 4. Data preparation for wind driven generator
+```{r}
+formosa <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/17.csv")
+formosa$location <- "formosa"
+chengloong <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/47.csv")
+chengloong$location <- "chengloong"
+cbwd <- rbind(formosa,chengloong)
+rm(formosa,chengloong)
+
+names(cbwd)
+names(cbwd)[c(1:2,4:8,12:17)] 
+
+cbwd <- cbwd[,-c(1:2,4:8,12:17)] 
+summary(cbwd)
+```
+
+```{r}
+date <- substr(cbwd$MYTIME, 1,10)
+time <- paste(substr(cbwd$MYTIME,12, 13),":00:00",sep = "") 
+cbwd$MYTIME <- as.POSIXct(paste(date,time, sep = " "))
+
+cbwd$location <- factor(cbwd$location)
+
+table(cbwd$WS65M=="-999")
+table(cbwd$PAC< 0 )
+cbwd <- subset(cbwd,WS65M!="-999")
+cbwd <- subset(cbwd,PAC>0)
+summary(cbwd)
+
+cbwd_sc <- as.data.frame(scale(cbwd[,c(2:5)]))
+cbwd_scframe <- cbind(cbwd$MYTIME,cbwd$location,cbwd_sc)
+colnames(cbwd_scframe) <- c("mytime","location","ws10m","ws65m","swdown","pac")
+summary(cbwd_scframe)
+cbwd_sc_noloc <- cbwd_scframe[,-2]
+```
+
+
+
+# 5. Deep learning for LSTM 
+
+### 5.1 solar data 
+#### We use solar generator data observed from Chunghwa to build the model.
+```{r}
+library(keras)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(lubridate)
+library(xts)
+set.seed(7)
+
+dataframe <- read.csv(
+  'C:/Users/Christine Liou/Documents/ETC/Data_1105/14.csv')
+
+date <- substr(dataframe$MYTIME, 1,10)
+time <- paste(substr(dataframe$MYTIME,12, 13),":00:00",sep = "") 
+dataframe$MYTIME <- as.POSIXct(paste(date,time, sep = " "))
+
+
+dataframe <- dataframe[order(dataframe$MYTIME),]
+```
+
+```{r}
+ggplot(
+  data = dataframe,
+  mapping = aes(
+    x = MYTIME,
+    y = PAC)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Time") + 
+  labs(y = "electricity production(PAC)")
+```
+
+#### September from Chunghwa
+```{r}
+sept <- dataframe[1:720,]
+
+ggplot(
+  data = sept,
+  mapping = aes(
+    x = MYTIME,
+    y = PAC)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Time") + 
+  labs(y = "electricity production(PAC)")
+```
+```{r}
+names(sept)
+sept <- sept[,c(3,18)]
+
+library(dygraphs)
+sept_xts <-  xts(sept, order.by = sept$MYTIME) 
+
+dygraph(sept_xts, main = " Chunghwa SWDOWN and PAC + PAC") %>%
+  dyRangeSelector()
+```
+
+#### data normalization
+```{r}
+max_value <- max(sept$PAC)
+min_value <- min(sept$PAC)
+spread <- max_value - min_value
+
+dataset <- (sept$PAC - min_value) / spread #正規化資料
+range(dataset)
+```
+
+#### build the model
+```{r}
+create_dataset <- function(dataset,
+                           look_back = 1)
+{
+  l <- length(dataset)
+  dataX <- array(dim = c(l - look_back, look_back))
+  
+  for (i in 1:ncol(dataX))
+  {
+    dataX[, i] <- dataset[i:(l - look_back + i - 1)]
+  }
+  
+  dataY <- array(
+    data = dataset[(look_back + 1):l],
+    dim = c(l - look_back, 1))
+  
+  return(
+    list(
+      dataX = dataX,
+      dataY = dataY))
+} #設定x y 的資料格式 
+
+train_size <- as.integer(length(dataset) * 0.67)
+test_size <- length(dataset) - train_size
+
+train <- dataset[1:train_size]
+test <- dataset[(train_size + 1):length(dataset)]
+
+cat(length(train), length(test))  #切分訓練集與測試集
+# 482 238
+
+look_back <- 1           #設定t-1
+trainXY <- create_dataset(train, look_back)
+testXY <-  create_dataset(test, look_back)
+
+dim_train <- dim(trainXY$dataX)
+dim_test <- dim(testXY$dataX)
+
+# reshape input to be [samples, time steps, features]
+dim(trainXY$dataX) <- c(dim_train[1], 1, dim_train[2])
+dim(testXY$dataX) <- c(dim_test[1], 1, dim_test[2])
+```
+
+#### training data
+```{r}
+library(keras)
+library(tensorflow)
+model <- keras_model_sequential()
+
+model %>%
+  layer_lstm(
+    units = 4,
+    input_shape = c(1, look_back)) %>%
+  layer_dense(
+    units = 1) %>%
+  compile(
+    loss = 'mean_squared_error',
+    optimizer = 'adam') %>%
+  fit(trainXY$dataX,
+      trainXY$dataY,
+      epochs = 30,  #調30代就差不多
+      batch_size = 1,
+      verbose = 2)
+
+```
+
+#### result
+```{r}
+trainScore <- model %>%
+  evaluate(
+    trainXY$dataX,
+    trainXY$dataY,
+    verbose = 2)
+
+testScore <- model %>%
+  evaluate(
+    testXY$dataX,
+    testXY$dataY,
+    verbose = 2)
+
+# trainScore_inv = trainScore * spread + min_value
+
+sprintf(
+  'Train Score: %.4f MSE (%.4f RMSE)',
+  trainScore * spread^2,
+  sqrt(trainScore) * spread)
+
+sprintf(
+  'Test Score: %.4f MSE (%.4f RMSE)',
+  testScore * spread^2,
+  sqrt(testScore) * spread)
+
+```
+
+#### visulation of the result
+```{r}
+trainPredict <- model %>%
+  predict(
+    trainXY$dataX,
+    verbose = 2)
+testPredict <- model %>%
+  predict(
+    testXY$dataX,
+    verbose = 2)
+
+trainPredict <- trainPredict * spread + min_value
+testPredict <- testPredict * spread + min_value
+
+df <- data.frame(
+  index = 1:length(dataset),
+  value = dataset * spread + min_value,
+  type = 'raw') %>%
+  rbind(
+    data.frame(
+      index = 1:length(trainPredict) + look_back,
+      value = trainPredict,
+      type = 'train')) %>%
+  rbind(
+    data.frame(
+      index = 1:length(testPredict) + look_back + length(train),
+      value = testPredict,
+      type = 'test'))
+
+ggplot(data = df) +
+  geom_line(
+    mapping = aes(
+      x = index,
+      y = value,
+      color = type)) +
+  geom_point(
+    mapping = aes(
+      x = index,
+      y = value,
+      color = type)) +
+  geom_vline(
+    xintercept = length(train) + 0.5) +
+  labs(x = "時間") + 
+  labs(y = "發電量(PAC)")
+```
+
+
+```{r}
+mean((trainPredict - mean(trainPredict))^2)
+sqrt(mean((trainPredict - mean(trainPredict))^2))
+
+trainActual = trainXY$dataY * spread + min_value
+mean(trainActual)
+sd(trainActual)
+
+#summary(trainActual)
+#summary(trainPredict)
+
+```
+```{r}
+cor(trainActual, trainPredict)
+plot(trainActual, trainPredict)
+abline(a = 0, b = 1)
+```
+
+```{r}
+testActual = testXY$dataY * spread + min_value
+mean(testActual)
+sd(testActual)
+
+#summary(testActual)
+#summary(testPredict)
+
+cor(testActual, testPredict)
+plot(testActual, testPredict)
+abline(a = 0, b = 1)
+```
+
+#### total Chunghwa data
+```{r}
+max_value <- max(dataframe$PAC)
+min_value <- min(dataframe$PAC)
+spread <- max_value - min_value
+
+dataset <- (dataframe$PAC - min_value) / spread #正規化資料
+range(dataset)
+
+create_dataset <- function(dataset,
+                           look_back = 1)
+{
+  l <- length(dataset)
+  dataX <- array(dim = c(l - look_back, look_back))
+  
+  for (i in 1:ncol(dataX))
+  {
+    dataX[, i] <- dataset[i:(l - look_back + i - 1)]
+  }
+  
+  dataY <- array(
+    data = dataset[(look_back + 1):l],
+    dim = c(l - look_back, 1))
+  
+  return(
+    list(
+      dataX = dataX,
+      dataY = dataY))
+} #設定x y 的資料格式 
+
+train_size <- as.integer(length(dataset) * 0.67)
+test_size <- length(dataset) - train_size
+
+train <- dataset[1:train_size]
+test <- dataset[(train_size + 1):length(dataset)]
+
+cat(length(train), length(test))  #切分訓練集與測試集
+#1007 496
+```
+
+```{r}
+for (i in c(1:5)){
+  look_back <- i           #設定t-1
+  trainXY <- create_dataset(train, look_back)
+  testXY <-  create_dataset(test, look_back)
+  
+  dim_train <- dim(trainXY$dataX)
+  dim_test <- dim(testXY$dataX)
+  
+  # reshape input to be [samples, time steps, features]
+  dim(trainXY$dataX) <- c(dim_train[1], 1, dim_train[2])
+  dim(testXY$dataX) <- c(dim_test[1], 1, dim_test[2])
+  
+  
+  #建模訓練
+  model <- keras_model_sequential()
+  
+  model %>%
+    layer_lstm(
+      units = 4,
+      input_shape = c(1, look_back)) %>%
+    layer_dense(
+      units = 1) %>%
+    compile(
+      loss = 'mean_squared_error',
+      optimizer = 'adam') %>%
+    fit(trainXY$dataX,
+        trainXY$dataY,
+        epochs = 30,  #調30代就差不多
+        batch_size = 1,
+        verbose = 2)
+  
+  #訓練結果
+  trainScore <- model %>%
+    evaluate(
+      trainXY$dataX,
+      trainXY$dataY,
+      verbose = 2)
+  
+  testScore <- model %>%
+    evaluate(
+      testXY$dataX,
+      testXY$dataY,
+      verbose = 2)
+  
+  # trainScore_inv = trainScore * spread + min_value
+  
+  train_RMSE <- sprintf(
+    'Train Score: %.4f MSE (%.4f RMSE)',
+    trainScore * spread^2,
+    sqrt(trainScore) * spread)
+  print(train_RMSE)
+  
+  
+  test_RMSE <- sprintf(
+    'Test Score: %.4f MSE (%.4f RMSE)',
+    testScore * spread^2,
+    sqrt(testScore) * spread)
+  print(test_RMSE)
+  
+  
+  #把訓練集的擬合值、測試及的預測值和原始數據畫在一起
+  #灰線是真實數據，深藍色是訓練集的訓練結果，淺藍色是預測集的預測值
+  trainPredict <- model %>%
+    predict(
+      trainXY$dataX,
+      verbose = 2)
+  testPredict <- model %>%
+    predict(
+      testXY$dataX,
+      verbose = 2)
+  
+  trainPredict <- trainPredict * spread + min_value
+  testPredict <- testPredict * spread + min_value
+  
+  df <- data.frame(
+    index = 1:length(dataset),
+    value = dataset * spread + min_value,
+    type = 'raw') %>%
+    rbind(
+      data.frame(
+        index = 1:length(trainPredict) + look_back,
+        value = trainPredict,
+        type = 'train')) %>%
+    rbind(
+      data.frame(
+        index = 1:length(testPredict) + look_back + length(train),
+        value = testPredict,
+        type = 'test'))
+  
+  
+  
+  mean((trainPredict - mean(trainPredict))^2)
+  sqrt(mean((trainPredict - mean(trainPredict))^2))
+  
+  trainActual = trainXY$dataY * spread + min_value
+  mean(trainActual)
+  sd(trainActual)
+  
+  train_cor <- cor(trainActual, trainPredict)
+  print(train_cor)
+  
+  
+  testActual = testXY$dataY * spread + min_value
+  mean(testActual)
+  sd(testActual)
+  
+  test_cor <- cor(testActual, testPredict)
+  print(test_cor)
+  
+}
+
+```
+
+### 5.2 wind data
+#### We only use wind driven generator observed from Formosa. 
+```{r}
+dataframe <- read.csv(
+  'C:/Users/Christine Liou/Documents/ETC/Data_1105/17.csv')
+
+date <- substr(dataframe$MYTIME, 1,10)
+time <- paste(substr(dataframe$MYTIME,12, 13),":00:00",sep = "") 
+dataframe$MYTIME <- as.POSIXct(paste(date,time, sep = " "))
+
+
+dataframe <- dataframe[order(dataframe$MYTIME),]
+
+ggplot(
+  data = dataframe,
+  mapping = aes(
+    x = MYTIME,
+    y = PAC)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Time") + 
+  labs(y = "electricity production(PAC)")
+
+```
+
+
+#### only September 
+```{r}
+sept <- dataframe[1:720,]
+
+ggplot(
+  data = sept,
+  mapping = aes(
+    x = MYTIME,
+    y = PAC)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Time") + 
+  labs(y = "electricity production(PAC)")
+```
+
+#### normalization 
+```{r}
+max_value <- max(sept$PAC)
+min_value <- min(sept$PAC)
+spread <- max_value - min_value
+
+dataset <- (sept$PAC - min_value) / spread #正規化資料
+range(dataset)
+```
+
+#### build the model
+```{r}
+create_dataset <- function(dataset,
+                           look_back = 1)
+{
+  l <- length(dataset)
+  dataX <- array(dim = c(l - look_back, look_back))
+  
+  for (i in 1:ncol(dataX))
+  {
+    dataX[, i] <- dataset[i:(l - look_back + i - 1)]
+  }
+  
+  dataY <- array(
+    data = dataset[(look_back + 1):l],
+    dim = c(l - look_back, 1))
+  
+  return(
+    list(
+      dataX = dataX,
+      dataY = dataY))
+} #設定x y 的資料格式 
+
+train_size <- as.integer(length(dataset) * 0.67)
+test_size <- length(dataset) - train_size
+
+train <- dataset[1:train_size]
+test <- dataset[(train_size + 1):length(dataset)]
+
+cat(length(train), length(test))  #切分訓練集與測試集
+# 482 238
+
+look_back <- 1           #設定t-1
+trainXY <- create_dataset(train, look_back)
+testXY <-  create_dataset(test, look_back)
+
+dim_train <- dim(trainXY$dataX)
+dim_test <- dim(testXY$dataX)
+
+# reshape input to be [samples, time steps, features]
+dim(trainXY$dataX) <- c(dim_train[1], 1, dim_train[2])
+dim(testXY$dataX) <- c(dim_test[1], 1, dim_test[2])
+
+```
+
+#### result
+```{r}
+model <- keras_model_sequential()
+
+model %>%
+  layer_lstm(
+    units = 4,
+    input_shape = c(1, look_back)) %>%
+  layer_dense(
+    units = 1) %>%
+  compile(
+    loss = 'mean_squared_error',
+    optimizer = 'adam') %>%
+  fit(trainXY$dataX,
+      trainXY$dataY,
+      epochs = 30,  #調30代就差不多
+      batch_size = 1,
+      verbose = 2)
+
+#訓練結果
+trainScore <- model %>%
+  evaluate(
+    trainXY$dataX,
+    trainXY$dataY,
+    verbose = 2)
+
+testScore <- model %>%
+  evaluate(
+    testXY$dataX,
+    testXY$dataY,
+    verbose = 2)
+
+# trainScore_inv = trainScore * spread + min_value
+
+sprintf(
+  'Train Score: %.4f MSE (%.4f RMSE)',
+  trainScore * spread^2,
+  sqrt(trainScore) * spread)
+
+
+sprintf(
+  'Test Score: %.4f MSE (%.4f RMSE)',
+  testScore * spread^2,
+  sqrt(testScore) * spread)
+```
+
+
+#### visulation of the result
+```{r}
+trainPredict <- model %>%
+  predict(
+    trainXY$dataX,
+    verbose = 2)
+testPredict <- model %>%
+  predict(
+    testXY$dataX,
+    verbose = 2)
+
+trainPredict <- trainPredict * spread + min_value
+testPredict <- testPredict * spread + min_value
+
+df <- data.frame(
+  index = 1:length(dataset),
+  value = dataset * spread + min_value,
+  type = 'raw') %>%
+  rbind(
+    data.frame(
+      index = 1:length(trainPredict) + look_back,
+      value = trainPredict,
+      type = 'train')) %>%
+  rbind(
+    data.frame(
+      index = 1:length(testPredict) + look_back + length(train),
+      value = testPredict,
+      type = 'test'))
+
+ggplot(data = df) +
+  geom_line(
+    mapping = aes(
+      x = index,
+      y = value,
+      color = type)) +
+  geom_point(
+    mapping = aes(
+      x = index,
+      y = value,
+      color = type)) +
+  geom_vline(
+    xintercept = length(train) + 0.5) +
+  labs(x = "時間") + 
+  labs(y = "發電量(PAC)")
+
+```
+
+```{r}
+mean((trainPredict - mean(trainPredict))^2)
+sqrt(mean((trainPredict - mean(trainPredict))^2))
+
+trainActual = trainXY$dataY * spread + min_value
+mean(trainActual)
+sd(trainActual)
+
+#summary(trainActual)
+#summary(trainPredict)
+
+cor(trainActual, trainPredict)
+plot(trainActual, trainPredict)
+abline(a = 0, b = 1)
+```
+
+```{r}
+testActual = testXY$dataY * spread + min_value
+mean(testActual)
+sd(testActual)
+
+#summary(testActual)
+#summary(testPredict)
+
+cor(testActual, testPredict)
+plot(testActual, testPredict)
+abline(a = 0, b = 1)
+
+```
+
+#### total Formosa data
+```{r}
+max_value <- max(dataframe$PAC)
+min_value <- min(dataframe$PAC)
+spread <- max_value - min_value
+
+dataset <- (dataframe$PAC - min_value) / spread #正規化資料
+range(dataset)
+
+create_dataset <- function(dataset,
+                           look_back = 1)
+{
+  l <- length(dataset)
+  dataX <- array(dim = c(l - look_back, look_back))
+  
+  for (i in 1:ncol(dataX))
+  {
+    dataX[, i] <- dataset[i:(l - look_back + i - 1)]
+  }
+  
+  dataY <- array(
+    data = dataset[(look_back + 1):l],
+    dim = c(l - look_back, 1))
+  
+  return(
+    list(
+      dataX = dataX,
+      dataY = dataY))
+} #設定x y 的資料格式 
+
+train_size <- as.integer(length(dataset) * 0.67)
+test_size <- length(dataset) - train_size
+
+train <- dataset[1:train_size]
+test <- dataset[(train_size + 1):length(dataset)]
+
+cat(length(train), length(test)) 
+```
+
+```{r}
+for (i in c(1:5)){
+  look_back <- i           #設定t-1
+  trainXY <- create_dataset(train, look_back)
+  testXY <-  create_dataset(test, look_back)
+  
+  dim_train <- dim(trainXY$dataX)
+  dim_test <- dim(testXY$dataX)
+  
+  # reshape input to be [samples, time steps, features]
+  dim(trainXY$dataX) <- c(dim_train[1], 1, dim_train[2])
+  dim(testXY$dataX) <- c(dim_test[1], 1, dim_test[2])
+  
+  
+  #建模訓練
+  model <- keras_model_sequential()
+  
+  model %>%
+    layer_lstm(
+      units = 4,
+      input_shape = c(1, look_back)) %>%
+    layer_dense(
+      units = 1) %>%
+    compile(
+      loss = 'mean_squared_error',
+      optimizer = 'adam') %>%
+    fit(trainXY$dataX,
+        trainXY$dataY,
+        epochs = 30,  #調30代就差不多
+        batch_size = 1,
+        verbose = 2)
+  
+  #訓練結果
+  trainScore <- model %>%
+    evaluate(
+      trainXY$dataX,
+      trainXY$dataY,
+      verbose = 2)
+  
+  testScore <- model %>%
+    evaluate(
+      testXY$dataX,
+      testXY$dataY,
+      verbose = 2)
+  
+  # trainScore_inv = trainScore * spread + min_value
+  
+  train_RMSE <- sprintf(
+    'Train Score: %.4f MSE (%.4f RMSE)',
+    trainScore * spread^2,
+    sqrt(trainScore) * spread)
+  print(train_RMSE)
+  
+  
+  test_RMSE <- sprintf(
+    'Test Score: %.4f MSE (%.4f RMSE)',
+    testScore * spread^2,
+    sqrt(testScore) * spread)
+  print(test_RMSE)
+  
+  
+  #把訓練集的擬合值、測試及的預測值和原始數據畫在一起
+  #灰線是真實數據，深藍色是訓練集的訓練結果，淺藍色是預測集的預測值
+  trainPredict <- model %>%
+    predict(
+      trainXY$dataX,
+      verbose = 2)
+  testPredict <- model %>%
+    predict(
+      testXY$dataX,
+      verbose = 2)
+  
+  trainPredict <- trainPredict * spread + min_value
+  testPredict <- testPredict * spread + min_value
+  
+  df <- data.frame(
+    index = 1:length(dataset),
+    value = dataset * spread + min_value,
+    type = 'raw') %>%
+    rbind(
+      data.frame(
+        index = 1:length(trainPredict) + look_back,
+        value = trainPredict,
+        type = 'train')) %>%
+    rbind(
+      data.frame(
+        index = 1:length(testPredict) + look_back + length(train),
+        value = testPredict,
+        type = 'test'))
+  
+  
+  
+  mean((trainPredict - mean(trainPredict))^2)
+  sqrt(mean((trainPredict - mean(trainPredict))^2))
+  
+  trainActual = trainXY$dataY * spread + min_value
+  mean(trainActual)
+  sd(trainActual)
+  
+  train_cor <- cor(trainActual, trainPredict)
+  print(train_cor)
+  
+  
+  testActual = testXY$dataY * spread + min_value
+  mean(testActual)
+  sd(testActual)
+  
+  test_cor <- cor(testActual, testPredict)
+  print(test_cor)
+  
+}
+
+```
+
