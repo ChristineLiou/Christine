@@ -1,8 +1,8 @@
 ---
 title: "Renewable energy generator forecast"
-output: 
-  html_document:
-    keep_md: true
+output:
+  md_document:
+    variant: markdown_github
 ---
 
 # 1. About the research
