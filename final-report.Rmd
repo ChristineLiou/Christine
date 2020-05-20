@@ -1,6 +1,6 @@
 ---
 title: "Renewable energy generator forecast"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 # 1. About the research
