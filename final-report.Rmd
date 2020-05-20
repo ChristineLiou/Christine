@@ -130,14 +130,6 @@ graph_chunghwa <- ggplot(data = DF_chunghwa, mapping = aes(x = hour, y = value, 
 graph_chunghwa
 ```
 
-```{r}
-chunghwa_xts <-  xts(chunghwa_graph, order.by = chunghwa_graph$mytime) 
-
-dygraph(chunghwa_xts,main = " Chunghwa SWDOWN and PAC + PAC") %>%
-  dyAxis("y",valueRange = c(-0.7:5)) %>%
-  dyRangeSelector()
-```
-
 
 ```{r}
 dreamhouse <- filter(cbso_z, cbso_z$location=="dreamhouse")
@@ -283,12 +275,6 @@ ggplot(
 ```{r}
 names(sept)
 sept <- sept[,c(3,18)]
-
-library(dygraphs)
-sept_xts <-  xts(sept, order.by = sept$MYTIME) 
-
-dygraph(sept_xts, main = " Chunghwa SWDOWN and PAC + PAC") %>%
-  dyRangeSelector()
 ```
 
 #### data normalization
