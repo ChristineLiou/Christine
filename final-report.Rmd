@@ -12,7 +12,7 @@ output:
 # 2. Data preparation for solar generator
 
 #### Load the library all we need in this study first. 
-```{r}
+```{r, warning=FALSE}
 library(lubridate)
 library(dygraphs)
 library(ggplot2)
@@ -26,7 +26,7 @@ library(xts)
 
 ### 2.1 loading data
 #### Five observed sites near the solar generators. Each of the sites recorded multiple information, and the most important variable is SWDOWN and PAC. We combined all the sites to a big data frame.  
-```{r}
+```{r,warning=FALSE}
 chunghwa <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/14.csv")
 chunghwa$location <- "chunghwa"
 dreamhouse <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/19.csv")
@@ -50,7 +50,7 @@ summary(cbso)
 
 ### 2.2 dealing time series 
 #### Shift the data frame to be time series format. 
-```{r}
+```{r,warning=FALSE}
 head(cbso$MYTIME)
 
 date <- substr(cbso$MYTIME, 1,10)
@@ -64,7 +64,7 @@ summary(cbso)
 
 ### 2.3 remove missing data
 #### The missing data were recorded in "-999", therefore, we removed all the data showed "-999".
-```{r}
+```{r,warning=FALSE}
 table(cbso$WS65M=="-999")
 cbso <- subset(cbso,WS65M!="-999")
 summary(cbso)
@@ -72,7 +72,7 @@ summary(cbso)
 
 ### 2.4 standardize data
 #### Standardized the numeriacal data.
-```{r}
+```{r,warning=FALSE}
 cbso_sc <- cbso[,c(2:5)]
 cbso_sc <- scale(cbso_sc)
 cbso_z <- as.data.frame(cbso_sc)
@@ -83,7 +83,7 @@ summary(cbso_z)
 
 # 3. Data visulation for solar generator
 #### Preparing the data frame to draw prictures. 
-```{r}
+```{r,warning=FALSE}
 cbso_sc <- cbso_z[,-2]
 lcbso_sc <- melt(cbso_sc, id.vars='mytime', variable.name = "variable")
 lcbso_sc$month <- factor(month(lcbso_sc$mytime))
@@ -98,13 +98,13 @@ night <- subset(DF_hour,DF_hour$hour %in% c(0:5,19:23))
 
 ### 3.1 all solar data for different time range 
 #### As the picture shows below, SWDOWN and PAC have the similar path during one day. These two variables rise when the sunrise, and decline to zero after the sunset. 
-```{r}
+```{r,warning=FALSE}
 mytheme <- theme_grey(base_family="STKaiti")
 ggplot(data = DF_hour, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme + theme(axis.text.x=element_text(angle=45, vjust=0.5)) + labs(x = "Time(hour)") + labs(y = "ws,swdown and pac") + ggtitle("solar generator for every hour (by mean)")
 ```
 
 #### Despite there are only three month of data, we can still find out that SWDOWN and PAC data in Sep to Nov go down smoothly, because of the shorter day light in winter. 
-```{r}
+```{r,warning=FALSE}
 mytheme <- theme_grey(base_family="STKaiti")
 ggplot(data = DF_month, mapping = aes(x = month, y = value, color = variable, group = variable)) + geom_line()  + mytheme +  labs(x = "Time(month)") + labs(y = "ws,swdown and pac")+ ggtitle("solar generator for month (by mean)")
 ```
@@ -112,14 +112,14 @@ ggplot(data = DF_month, mapping = aes(x = month, y = value, color = variable, gr
 ### 3.2 solar data visulation for different location 
 #### Three month of the PAC data were draw by different locations. As the picture showed below, the red line (chungwa) were higher than other locations and the xinglongmarket was the lowest.
 
-```{r}
+```{r,warning=FALSE}
 pac_graph <- ggplot(cbso_z, aes(x=mytime, y=pac, colour = location, group = location)) + geom_line() + ggtitle("發電量(PAC)")+  labs(x = "Time")+ labs(y = "electricity production(PAC)")
 pac_graph
 ```
 
 #### different location of the generators
 #### 
-```{r}
+```{r,warning=FALSE}
 chunghwa <- filter(cbso_z, cbso_z$location=="chunghwa")
 chunghwa_graph <- chunghwa[,c(1,5,6)]
 lchunghwa <- melt(chunghwa_graph,id.vars = "mytime",measure.vars = colnames(chunghwa_graph[-1]))
@@ -131,7 +131,7 @@ graph_chunghwa
 ```
 
 
-```{r}
+```{r,warning=FALSE}
 dreamhouse <- filter(cbso_z, cbso_z$location=="dreamhouse")
 dreamhouse_graph <- dreamhouse[,c(1,5,6)]
 ldreamhouse <- melt(dreamhouse_graph,id.vars = "mytime",measure.vars = colnames(chunghwa_graph[-1]))
@@ -141,7 +141,7 @@ graph_dreamhouse <- ggplot(data = DF_dreamhouse, mapping = aes(x = hour, y = val
 graph_dreamhouse
 ```
 
-```{r}
+```{r,warning=FALSE}
 futurehouse <- filter(cbso_z, cbso_z$location=="futurehouse")
 futurehouse_graph <- futurehouse[,c(1,5,6)]
 lfuturehouse <- melt(futurehouse_graph,id.vars = "mytime",measure.vars = colnames(futurehouse_graph[-1]))
@@ -151,7 +151,7 @@ graph_futurehouse <- ggplot(data = DF_futurehouse, mapping = aes(x = hour, y = v
 graph_futurehouse
 ```
 
-```{r}
+```{r,warning=FALSE}
 nuclearresearch <- filter(cbso_z, cbso_z$location=="nuclearresearch")
 nuclearresearch_graph <- futurehouse[,c(1,5,6)]
 lnuclearresearch <- melt(nuclearresearch_graph,id.vars = "mytime",measure.vars = colnames(nuclearresearch_graph[-1]))
@@ -162,7 +162,7 @@ graph_nuclearresearch
 ```
 
 
-```{r}
+```{r,warning=FALSE}
 xinglongmarket <- filter(cbso_z, cbso_z$location=="xinglongmarket")
 xinglongmarket_graph <-  xinglongmarket[,c(1,5,6)]
 lxinglongmarket <- melt(xinglongmarket_graph,id.vars = "mytime",measure.vars = colnames(xinglongmarket_graph[-1]))
@@ -174,7 +174,7 @@ graph_xinglongmarket
 
 ### 3.3 correlation between PAC and SWDOWN (ex. Chunghwa)
 
-```{r}
+```{r,warning=FALSE}
 chunghwa_cor <- chunghwa[,-c(1:2)]
 head(nearZeroVar(chunghwa_cor,saveMetrics = TRUE))
 names(chunghwa_cor)[nearZeroVar(chunghwa_cor,saveMetrics = TRUE)$zeroVar]
@@ -185,7 +185,7 @@ corrplot(correlations,order = "hclust",tl.cex = 0.5)
 ```
 
 # 4. Data preparation for wind driven generator
-```{r}
+```{r,warning=FALSE}
 formosa <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/17.csv")
 formosa$location <- "formosa"
 chengloong <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/47.csv")
@@ -200,7 +200,7 @@ cbwd <- cbwd[,-c(1:2,4:8,12:17)]
 summary(cbwd)
 ```
 
-```{r}
+```{r,warning=FALSE}
 date <- substr(cbwd$MYTIME, 1,10)
 time <- paste(substr(cbwd$MYTIME,12, 13),":00:00",sep = "") 
 cbwd$MYTIME <- as.POSIXct(paste(date,time, sep = " "))
@@ -226,7 +226,7 @@ cbwd_sc_noloc <- cbwd_scframe[,-2]
 
 ### 5.1 solar data 
 #### We use solar generator data observed from Chunghwa to build the model.
-```{r}
+```{r,warning=FALSE}
 library(keras)
 library(dplyr)
 library(ggplot2)
@@ -246,7 +246,7 @@ dataframe$MYTIME <- as.POSIXct(paste(date,time, sep = " "))
 dataframe <- dataframe[order(dataframe$MYTIME),]
 ```
 
-```{r}
+```{r,warning=FALSE}
 ggplot(
   data = dataframe,
   mapping = aes(
@@ -259,7 +259,7 @@ ggplot(
 ```
 
 #### September from Chunghwa
-```{r}
+```{r,warning=FALSE}
 sept <- dataframe[1:720,]
 
 ggplot(
@@ -272,13 +272,13 @@ ggplot(
   labs(x = "Time") + 
   labs(y = "electricity production(PAC)")
 ```
-```{r}
+```{r,warning=FALSE}
 names(sept)
 sept <- sept[,c(3,18)]
 ```
 
 #### data normalization
-```{r}
+```{r,warning=FALSE}
 max_value <- max(sept$PAC)
 min_value <- min(sept$PAC)
 spread <- max_value - min_value
@@ -288,7 +288,7 @@ range(dataset)
 ```
 
 #### build the model
-```{r}
+```{r,warning=FALSE}
 create_dataset <- function(dataset,
                            look_back = 1)
 {
@@ -332,7 +332,7 @@ dim(testXY$dataX) <- c(dim_test[1], 1, dim_test[2])
 ```
 
 #### training data
-```{r}
+```{r,warning=FALSE}
 library(keras)
 library(tensorflow)
 model <- keras_model_sequential()
@@ -355,7 +355,7 @@ model %>%
 ```
 
 #### result
-```{r}
+```{r,warning=FALSE}
 trainScore <- model %>%
   evaluate(
     trainXY$dataX,
@@ -383,7 +383,7 @@ sprintf(
 ```
 
 #### visulation of the result
-```{r}
+```{r,warning=FALSE}
 trainPredict <- model %>%
   predict(
     trainXY$dataX,
@@ -429,7 +429,7 @@ ggplot(data = df) +
 ```
 
 
-```{r}
+```{r,warning=FALSE}
 mean((trainPredict - mean(trainPredict))^2)
 sqrt(mean((trainPredict - mean(trainPredict))^2))
 
@@ -441,13 +441,13 @@ sd(trainActual)
 #summary(trainPredict)
 
 ```
-```{r}
+```{r,warning=FALSE}
 cor(trainActual, trainPredict)
 plot(trainActual, trainPredict)
 abline(a = 0, b = 1)
 ```
 
-```{r}
+```{r,warning=FALSE}
 testActual = testXY$dataY * spread + min_value
 mean(testActual)
 sd(testActual)
@@ -461,7 +461,7 @@ abline(a = 0, b = 1)
 ```
 
 #### total Chunghwa data
-```{r}
+```{r,warning=FALSE}
 max_value <- max(dataframe$PAC)
 min_value <- min(dataframe$PAC)
 spread <- max_value - min_value
@@ -500,7 +500,7 @@ cat(length(train), length(test))  #切分訓練集與測試集
 #1007 496
 ```
 
-```{r}
+```{r,warning=FALSE}
 for (i in c(1:5)){
   look_back <- i           #設定t-1
   trainXY <- create_dataset(train, look_back)
@@ -616,7 +616,7 @@ for (i in c(1:5)){
 
 ### 5.2 wind data
 #### We only use wind driven generator observed from Formosa. 
-```{r}
+```{r,warning=FALSE}
 dataframe <- read.csv(
   'C:/Users/Christine Liou/Documents/ETC/Data_1105/17.csv')
 
@@ -641,7 +641,7 @@ ggplot(
 
 
 #### only September 
-```{r}
+```{r,warning=FALSE}
 sept <- dataframe[1:720,]
 
 ggplot(
@@ -656,7 +656,7 @@ ggplot(
 ```
 
 #### normalization 
-```{r}
+```{r,warning=FALSE}
 max_value <- max(sept$PAC)
 min_value <- min(sept$PAC)
 spread <- max_value - min_value
@@ -666,7 +666,7 @@ range(dataset)
 ```
 
 #### build the model
-```{r}
+```{r,warning=FALSE}
 create_dataset <- function(dataset,
                            look_back = 1)
 {
@@ -711,7 +711,7 @@ dim(testXY$dataX) <- c(dim_test[1], 1, dim_test[2])
 ```
 
 #### result
-```{r}
+```{r,warning=FALSE}
 model <- keras_model_sequential()
 
 model %>%
@@ -758,7 +758,7 @@ sprintf(
 
 
 #### visulation of the result
-```{r}
+```{r,warning=FALSE}
 trainPredict <- model %>%
   predict(
     trainXY$dataX,
@@ -804,7 +804,7 @@ ggplot(data = df) +
 
 ```
 
-```{r}
+```{r,warning=FALSE}
 mean((trainPredict - mean(trainPredict))^2)
 sqrt(mean((trainPredict - mean(trainPredict))^2))
 
@@ -835,7 +835,7 @@ abline(a = 0, b = 1)
 ```
 
 #### total Formosa data
-```{r}
+```{r,warning=FALSE}
 max_value <- max(dataframe$PAC)
 min_value <- min(dataframe$PAC)
 spread <- max_value - min_value
@@ -873,7 +873,7 @@ test <- dataset[(train_size + 1):length(dataset)]
 cat(length(train), length(test)) 
 ```
 
-```{r}
+```{r,warning=FALSE}
 for (i in c(1:5)){
   look_back <- i           #設定t-1
   trainXY <- create_dataset(train, look_back)

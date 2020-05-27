@@ -334,217 +334,6 @@ mytheme <- theme_grey(base_family="STKaiti")
 ggplot(data = DF_hour, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme + theme(axis.text.x=element_text(angle=45, vjust=0.5)) + labs(x = "Time(hour)") + labs(y = "ws,swdown and pac") + ggtitle("solar generator for every hour (by mean)")
 ```
 
-```
-## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## family not found in Windows font database
-
-## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
 ![](final-report_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 #### Despite there are only three month of data, we can still find out that SWDOWN and PAC data in Sep to Nov go down smoothly, because of the shorter day light in winter. 
@@ -552,60 +341,6 @@ ggplot(data = DF_hour, mapping = aes(x = hour, y = value, color = variable, grou
 ```r
 mytheme <- theme_grey(base_family="STKaiti")
 ggplot(data = DF_month, mapping = aes(x = month, y = value, color = variable, group = variable)) + geom_line()  + mytheme +  labs(x = "Time(month)") + labs(y = "ws,swdown and pac")+ ggtitle("solar generator for month (by mean)")
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
 ```
 
 ![](final-report_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
@@ -635,60 +370,6 @@ graph_chunghwa <- ggplot(data = DF_chunghwa, mapping = aes(x = hour, y = value, 
 graph_chunghwa
 ```
 
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
 ![](final-report_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 
@@ -701,60 +382,6 @@ ldreamhouse$hour <- factor(hour(ldreamhouse$mytime))
 DF_dreamhouse <- aggregate(value ~ hour*variable, data = ldreamhouse, FUN = mean)
 graph_dreamhouse <- ggplot(data = DF_dreamhouse, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme+ labs(x = "Time(hour)") + labs(y = "SWDOWN and PAC")+ ggtitle("Dreamhouse")+ scale_color_discrete(labels=c("swdown(W/m2)","PAC(KW)"))
 graph_dreamhouse
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
 ```
 
 ![](final-report_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
@@ -770,60 +397,6 @@ graph_futurehouse <- ggplot(data = DF_futurehouse, mapping = aes(x = hour, y = v
 graph_futurehouse
 ```
 
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
 ![](final-report_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 
@@ -835,60 +408,6 @@ lnuclearresearch$hour <- factor(hour(lnuclearresearch$mytime))
 DF_nuclearresearch <- aggregate(value ~ hour*variable, data = lnuclearresearch, FUN = mean)
 graph_nuclearresearch <- ggplot(data = DF_nuclearresearch, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme  + labs(x = "Time(hour)") + labs(y = "SWDOWN and PAC")+ ggtitle("Nuclearresearch")+ scale_color_discrete(labels=c("swdown(W/m2)","PAC(KW)"))
 graph_nuclearresearch
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
 ```
 
 ![](final-report_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
@@ -903,60 +422,6 @@ lxinglongmarket$hour <- factor(hour(lxinglongmarket$mytime))
 DF_xinglongmarket <- aggregate(value ~ hour*variable, data = lxinglongmarket, FUN = mean)
 graph_xinglongmarket <- ggplot(data = DF_xinglongmarket, mapping = aes(x = hour, y = value, color = variable, group = variable)) + geom_line()  + mytheme  + labs(x = "Time(hour)") + labs(y = "SWDON and PAC")+ ggtitle("Xinglongmarket")+ scale_color_discrete(labels=c("swdown(W/m2)","PAC(KW)"))
 graph_xinglongmarket
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database
-```
-
-```
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
 ```
 
 ![](final-report_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
@@ -1355,7 +820,7 @@ sprintf(
 ```
 
 ```
-## [1] "Train Score: 31166664.7642 MSE (5582.7112 RMSE)"
+## [1] "Train Score: 31341549.0679 MSE (5598.3524 RMSE)"
 ```
 
 ```r
@@ -1366,7 +831,7 @@ sprintf(
 ```
 
 ```
-## [1] "Test Score: 23737309.2285 MSE (4872.0950 RMSE)"
+## [1] "Test Score: 23325678.3136 MSE (4829.6665 RMSE)"
 ```
 
 #### visulation of the result
@@ -1425,7 +890,7 @@ mean((trainPredict - mean(trainPredict))^2)
 ```
 
 ```
-## [1] 168984808
+## [1] 166324919
 ```
 
 ```r
@@ -1433,7 +898,7 @@ sqrt(mean((trainPredict - mean(trainPredict))^2))
 ```
 
 ```
-## [1] 12999.42
+## [1] 12896.7
 ```
 
 ```r
@@ -1464,7 +929,7 @@ cor(trainActual, trainPredict)
 
 ```
 ##           [,1]
-## [1,] 0.9184542
+## [1,] 0.9178671
 ```
 
 ```r
@@ -1501,7 +966,7 @@ cor(testActual, testPredict)
 
 ```
 ##           [,1]
-## [1,] 0.8568535
+## [1,] 0.8568759
 ```
 
 ```r
@@ -1680,36 +1145,36 @@ for (i in c(1:5)){
 ```
 
 ```
-## [1] "Train Score: 27654294.1574 MSE (5258.7350 RMSE)"
-## [1] "Test Score: 24957002.6587 MSE (4995.6984 RMSE)"
+## [1] "Train Score: 27997203.6555 MSE (5291.2384 RMSE)"
+## [1] "Test Score: 25619106.8383 MSE (5061.5321 RMSE)"
 ##           [,1]
-## [1,] 0.9066135
+## [1,] 0.9062521
 ##           [,1]
-## [1,] 0.8934762
-## [1] "Train Score: 22255104.5873 MSE (4717.5316 RMSE)"
-## [1] "Test Score: 20682084.2458 MSE (4547.7560 RMSE)"
-##          [,1]
-## [1,] 0.924712
-##           [,1]
-## [1,] 0.9131339
-## [1] "Train Score: 19716380.1286 MSE (4440.3131 RMSE)"
-## [1] "Test Score: 20868900.9756 MSE (4568.2492 RMSE)"
-##           [,1]
-## [1,] 0.9335593
+## [1,] 0.8929286
+## [1] "Train Score: 22074789.6767 MSE (4698.3816 RMSE)"
+## [1] "Test Score: 20119903.2983 MSE (4485.5215 RMSE)"
 ##         [,1]
-## [1,] 0.91178
-## [1] "Train Score: 18153686.4599 MSE (4260.7143 RMSE)"
-## [1] "Test Score: 19989143.5484 MSE (4470.9220 RMSE)"
+## [1,] 0.92512
 ##           [,1]
-## [1,] 0.9383417
+## [1,] 0.9138504
+## [1] "Train Score: 20157191.0425 MSE (4489.6761 RMSE)"
+## [1] "Test Score: 20849283.2932 MSE (4566.1015 RMSE)"
 ##           [,1]
-## [1,] 0.9146763
-## [1] "Train Score: 17162934.7328 MSE (4142.8172 RMSE)"
-## [1] "Test Score: 18841697.3160 MSE (4340.7024 RMSE)"
+## [1,] 0.9341524
 ##           [,1]
-## [1,] 0.9422508
+## [1,] 0.9115912
+## [1] "Train Score: 18482190.4720 MSE (4299.0918 RMSE)"
+## [1] "Test Score: 19604653.0546 MSE (4427.7142 RMSE)"
 ##           [,1]
-## [1,] 0.9189586
+## [1,] 0.9373914
+##           [,1]
+## [1,] 0.9169819
+## [1] "Train Score: 17955065.0230 MSE (4237.3417 RMSE)"
+## [1] "Test Score: 19707186.4252 MSE (4439.2777 RMSE)"
+##           [,1]
+## [1,] 0.9397351
+##           [,1]
+## [1,] 0.9167679
 ```
 
 ### 5.2 wind data
@@ -1867,7 +1332,7 @@ sprintf(
 ```
 
 ```
-## [1] "Train Score: 26111846742.0192 MSE (161591.6048 RMSE)"
+## [1] "Train Score: 26145496208.8026 MSE (161695.6901 RMSE)"
 ```
 
 ```r
@@ -1878,7 +1343,7 @@ sprintf(
 ```
 
 ```
-## [1] "Test Score: 88750860631.0756 MSE (297910.8266 RMSE)"
+## [1] "Test Score: 89394054124.1420 MSE (298988.3846 RMSE)"
 ```
 
 
@@ -1937,7 +1402,7 @@ mean((trainPredict - mean(trainPredict))^2)
 ```
 
 ```
-## [1] 236390622985
+## [1] 244689408531
 ```
 
 ```r
@@ -1945,7 +1410,7 @@ sqrt(mean((trainPredict - mean(trainPredict))^2))
 ```
 
 ```
-## [1] 486200.2
+## [1] 494660.9
 ```
 
 ```r
@@ -1974,7 +1439,7 @@ cor(trainActual, trainPredict)
 
 ```
 ##           [,1]
-## [1,] 0.9508593
+## [1,] 0.9507914
 ```
 
 ```r
@@ -2011,7 +1476,7 @@ cor(testActual, testPredict)
 
 ```
 ##           [,1]
-## [1,] 0.9610983
+## [1,] 0.9605006
 ```
 
 ```r
@@ -2186,35 +1651,35 @@ for (i in c(1:5)){
 ```
 
 ```
-## [1] "Train Score: 54917546879.7715 MSE (234344.9314 RMSE)"
-## [1] "Test Score: 70918160849.1094 MSE (266304.6392 RMSE)"
-##         [,1]
-## [1,] 0.97264
+## [1] "Train Score: 55805811844.0523 MSE (236232.5376 RMSE)"
+## [1] "Test Score: 75215563570.6797 MSE (274254.5598 RMSE)"
 ##           [,1]
-## [1,] 0.9279809
-## [1] "Train Score: 56450031356.4630 MSE (237592.1534 RMSE)"
-## [1] "Test Score: 75455682476.0754 MSE (274691.9775 RMSE)"
+## [1,] 0.9724591
 ##           [,1]
-## [1,] 0.9731528
+## [1,] 0.9273319
+## [1] "Train Score: 54033238715.5027 MSE (232450.5081 RMSE)"
+## [1] "Test Score: 72516289405.1015 MSE (269288.4873 RMSE)"
 ##           [,1]
-## [1,] 0.9301794
-## [1] "Train Score: 53511194173.8213 MSE (231324.8672 RMSE)"
-## [1] "Test Score: 71616969554.5968 MSE (267613.4704 RMSE)"
+## [1,] 0.9729067
 ##           [,1]
-## [1,] 0.9729795
+## [1,] 0.9296998
+## [1] "Train Score: 53114828498.6512 MSE (230466.5453 RMSE)"
+## [1] "Test Score: 72347016680.3355 MSE (268974.0074 RMSE)"
 ##           [,1]
-## [1,] 0.9285726
-## [1] "Train Score: 54767005047.6925 MSE (234023.5139 RMSE)"
-## [1] "Test Score: 72730381966.8979 MSE (269685.7096 RMSE)"
+## [1,] 0.9730019
 ##           [,1]
-## [1,] 0.9734719
+## [1,] 0.9282315
+## [1] "Train Score: 52453293322.3251 MSE (229026.8397 RMSE)"
+## [1] "Test Score: 71316942495.0521 MSE (267052.3216 RMSE)"
 ##           [,1]
-## [1,] 0.9280392
-## [1] "Train Score: 52682149915.2296 MSE (229525.9243 RMSE)"
-## [1] "Test Score: 70718651512.0847 MSE (265929.7868 RMSE)"
+## [1,] 0.9733481
 ##           [,1]
-## [1,] 0.9732983
+## [1,] 0.9287825
+## [1] "Train Score: 52331315878.0521 MSE (228760.3897 RMSE)"
+## [1] "Test Score: 73121593815.2157 MSE (270410.0475 RMSE)"
 ##           [,1]
-## [1,] 0.9293124
+## [1,] 0.9736755
+##           [,1]
+## [1,] 0.9288025
 ```
 
