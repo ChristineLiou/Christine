@@ -6,12 +6,13 @@ output:
 ---
 
 # 1. About the research
-#### The data from Electronics Testing Center, Taiwan. Due to the limited dimensions, date from solar generator included DOWNWARD SHORT WAVE FLUX AT GROUND SURFACE(SWDOWN) and electricity production (PAC), and data from wind drive generator included 10 meter high of wind speed(WS10m), 65 meter high of wind speed (WS65m) and electricity production(PAC).   
-#### 本次研究案電子檢驗中心提供兩種發電數據:風力發電及太陽能發電，由於本次提供數據維度有限，太陽能發電的數據僅能從地表輻射(SWDOWN)和發電量(PAC)觀察;風力發電僅能參考發電機10公尺觀測到的風速(WS10m)、65公尺觀測到的風速(WS65m)及發電量(PAC)三個變數。
+The hourly data collected electricity production of solar and wind speed generations was from Electronics Testing Center, Taiwan. Data from solar generator included DOWNWARD SHORT WAVE FLUX AT GROUND SURFACE(SWDOWN) and electricity production (PAC), and data from wind drive generator included 10 meter high of wind speed(WS10m), 65 meters high of wind speed (WS65m) and electricity production(PAC). There are five solar generation observations and two wind speed generations. 
+This research visualized the insight of collected data and provided a deep learning model-LSTM to predict electricity production. 
+
 
 # 2. Data preparation for solar generator
 
-#### Load the library all we need in this study first. 
+Load the library all we need in this study first. 
 
 ```r
 library(lubridate)
@@ -120,7 +121,7 @@ library(xts)
 ```
 
 ### 2.1 loading data
-#### Five observed sites near the solar generators. Each of the sites recorded multiple information, and the most important variable is SWDOWN and PAC. We combined all the sites to a big data frame.  
+Five observed sites near the solar generators. Each of the sites recorded multiple information, and the most important variable is SWDOWN and PAC. We combined all the sites to a big data frame.  
 
 ```r
 chunghwa <- read.csv("C:/Users/Christine Liou/Documents/ETC/Data_1105/14.csv")
@@ -192,8 +193,8 @@ summary(cbso)
 ```
 
 
-### 2.2 dealing time series 
-#### Shift the data frame to be time series format. 
+### 2.2 Transform the data to time series 
+Shift the data frame to be time series format. 
 
 ```r
 head(cbso$MYTIME)
@@ -239,8 +240,8 @@ summary(cbso)
 ##  Max.   :49195
 ```
 
-### 2.3 remove missing data
-#### The missing data were recorded in "-999", therefore, we removed all the data showed "-999".
+### 2.3 Remove missing data
+The missing data were recorded in "-999", therefore, we removed all the data showed "-999".
 
 ```r
 table(cbso$WS65M=="-999")
@@ -281,8 +282,8 @@ summary(cbso)
 ##  Max.   :49195
 ```
 
-### 2.4 standardize data
-#### Standardized the numeriacal data.
+### 2.4 Standardize the data
+Standardized the numeriacal data.
 
 ```r
 cbso_sc <- cbso[,c(2:5)]
@@ -311,7 +312,7 @@ summary(cbso_z)
 ```
 
 # 3. Data visulation for solar generator
-#### Preparing the data frame to draw prictures. 
+Preparing the data frame to draw prictures. 
 
 ```r
 cbso_sc <- cbso_z[,-2]
@@ -326,8 +327,8 @@ day <- subset(DF_hour,DF_hour$hour %in% c(6:18))
 night <- subset(DF_hour,DF_hour$hour %in% c(0:5,19:23))
 ```
 
-### 3.1 all solar data for different time range 
-#### As the picture shows below, SWDOWN and PAC have the similar path during one day. These two variables rise when the sunrise, and decline to zero after the sunset. 
+### 3.1 All solar data for different time range 
+As the picture shows below, SWDOWN and PAC have the similar path during one day. These two variables rise when the sunrise, and decline to zero after the sunset. 
 
 ```r
 mytheme <- theme_grey(base_family="STKaiti")
@@ -336,7 +337,7 @@ ggplot(data = DF_hour, mapping = aes(x = hour, y = value, color = variable, grou
 
 ![](final-report_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
-#### Despite there are only three month of data, we can still find out that SWDOWN and PAC data in Sep to Nov go down smoothly, because of the shorter day light in winter. 
+Despite there are only three month of data, we can still find out that SWDOWN and PAC data in Sep to Nov go down smoothly, because of the shorter day light in winter. 
 
 ```r
 mytheme <- theme_grey(base_family="STKaiti")
@@ -345,8 +346,8 @@ ggplot(data = DF_month, mapping = aes(x = month, y = value, color = variable, gr
 
 ![](final-report_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
-### 3.2 solar data visulation for different location 
-#### Three month of the PAC data were draw by different locations. As the picture showed below, the red line (chungwa) were higher than other locations and the xinglongmarket was the lowest.
+### 3.2 Solar data visulation for different location 
+Three month of the PAC data were draw by different locations. As the picture showed below, the red line (chungwa) were higher than other locations and the xinglongmarket was the lowest.
 
 
 ```r
@@ -356,8 +357,8 @@ pac_graph
 
 ![](final-report_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
-#### different location of the generators
-#### 
+Different location of the generators
+
 
 ```r
 chunghwa <- filter(cbso_z, cbso_z$location=="chunghwa")
@@ -426,7 +427,7 @@ graph_xinglongmarket
 
 ![](final-report_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
-### 3.3 correlation between PAC and SWDOWN (ex. Chunghwa)
+### 3.3 Correlation between PAC and SWDOWN (ex. Chunghwa)
 
 
 ```r
@@ -615,12 +616,10 @@ summary(cbwd_scframe)
 cbwd_sc_noloc <- cbwd_scframe[,-2]
 ```
 
-
-
 # 5. Deep learning for LSTM 
 
-### 5.1 solar data 
-#### We use solar generator data observed from Chunghwa to build the model.
+### 5.1 Solar data 
+The model was built from solar generator data observed from Chunghwa.
 
 ```r
 library(keras)
@@ -657,7 +656,7 @@ ggplot(
 
 ![](final-report_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
-#### September from Chunghwa
+Data in September from Chunghwa
 
 ```r
 sept <- dataframe[1:720,]
@@ -692,7 +691,7 @@ names(sept)
 sept <- sept[,c(3,18)]
 ```
 
-#### data normalization
+Data normalization
 
 ```r
 max_value <- max(sept$PAC)
@@ -707,7 +706,7 @@ range(dataset)
 ## [1] 0 1
 ```
 
-#### build the model
+Build the model
 
 ```r
 create_dataset <- function(dataset,
@@ -759,7 +758,7 @@ dim(trainXY$dataX) <- c(dim_train[1], 1, dim_train[2])
 dim(testXY$dataX) <- c(dim_test[1], 1, dim_test[2])
 ```
 
-#### training data
+Training data
 
 ```r
 library(keras)
@@ -796,7 +795,7 @@ model %>%
       verbose = 2)
 ```
 
-#### result
+Result
 
 ```r
 trainScore <- model %>%
@@ -820,7 +819,7 @@ sprintf(
 ```
 
 ```
-## [1] "Train Score: 31341549.0679 MSE (5598.3524 RMSE)"
+## [1] "Train Score: 31089840.4522 MSE (5575.8264 RMSE)"
 ```
 
 ```r
@@ -831,10 +830,10 @@ sprintf(
 ```
 
 ```
-## [1] "Test Score: 23325678.3136 MSE (4829.6665 RMSE)"
+## [1] "Test Score: 23055459.2870 MSE (4801.6101 RMSE)"
 ```
 
-#### visulation of the result
+Visulation of the result
 
 ```r
 trainPredict <- model %>%
@@ -890,7 +889,7 @@ mean((trainPredict - mean(trainPredict))^2)
 ```
 
 ```
-## [1] 166324919
+## [1] 164949889
 ```
 
 ```r
@@ -898,7 +897,7 @@ sqrt(mean((trainPredict - mean(trainPredict))^2))
 ```
 
 ```
-## [1] 12896.7
+## [1] 12843.28
 ```
 
 ```r
@@ -929,7 +928,7 @@ cor(trainActual, trainPredict)
 
 ```
 ##           [,1]
-## [1,] 0.9178671
+## [1,] 0.9185843
 ```
 
 ```r
@@ -966,7 +965,7 @@ cor(testActual, testPredict)
 
 ```
 ##           [,1]
-## [1,] 0.8568759
+## [1,] 0.8570221
 ```
 
 ```r
@@ -976,7 +975,7 @@ abline(a = 0, b = 1)
 
 ![](final-report_files/figure-html/unnamed-chunk-29-1.png)<!-- -->
 
-#### total Chunghwa data
+Total Chunghwa data
 
 ```r
 max_value <- max(dataframe$PAC)
@@ -1145,40 +1144,40 @@ for (i in c(1:5)){
 ```
 
 ```
-## [1] "Train Score: 27997203.6555 MSE (5291.2384 RMSE)"
-## [1] "Test Score: 25619106.8383 MSE (5061.5321 RMSE)"
+## [1] "Train Score: 27104849.6864 MSE (5206.2318 RMSE)"
+## [1] "Test Score: 24669828.7099 MSE (4966.8731 RMSE)"
 ##           [,1]
-## [1,] 0.9062521
+## [1,] 0.9067595
 ##           [,1]
-## [1,] 0.8929286
-## [1] "Train Score: 22074789.6767 MSE (4698.3816 RMSE)"
-## [1] "Test Score: 20119903.2983 MSE (4485.5215 RMSE)"
-##         [,1]
-## [1,] 0.92512
+## [1,] 0.8937099
+## [1] "Train Score: 22794125.3968 MSE (4774.3194 RMSE)"
+## [1] "Test Score: 20704857.7737 MSE (4550.2591 RMSE)"
 ##           [,1]
-## [1,] 0.9138504
-## [1] "Train Score: 20157191.0425 MSE (4489.6761 RMSE)"
-## [1] "Test Score: 20849283.2932 MSE (4566.1015 RMSE)"
+## [1,] 0.9249797
 ##           [,1]
-## [1,] 0.9341524
+## [1,] 0.9135639
+## [1] "Train Score: 19301444.9925 MSE (4393.3410 RMSE)"
+## [1] "Test Score: 20062338.0480 MSE (4479.1001 RMSE)"
 ##           [,1]
-## [1,] 0.9115912
-## [1] "Train Score: 18482190.4720 MSE (4299.0918 RMSE)"
-## [1] "Test Score: 19604653.0546 MSE (4427.7142 RMSE)"
+## [1,] 0.9346221
 ##           [,1]
-## [1,] 0.9373914
+## [1,] 0.9139142
+## [1] "Train Score: 17801252.6749 MSE (4219.1531 RMSE)"
+## [1] "Test Score: 19918153.6312 MSE (4462.9759 RMSE)"
 ##           [,1]
-## [1,] 0.9169819
-## [1] "Train Score: 17955065.0230 MSE (4237.3417 RMSE)"
-## [1] "Test Score: 19707186.4252 MSE (4439.2777 RMSE)"
+## [1,] 0.9404279
 ##           [,1]
-## [1,] 0.9397351
+## [1,] 0.9157477
+## [1] "Train Score: 17361260.9112 MSE (4166.6846 RMSE)"
+## [1] "Test Score: 18957084.2056 MSE (4353.9734 RMSE)"
 ##           [,1]
-## [1,] 0.9167679
+## [1,] 0.9411513
+##           [,1]
+## [1,] 0.9185227
 ```
 
-### 5.2 wind data
-#### We only use wind driven generator observed from Formosa. 
+### 5.2 Wind data
+We only use wind driven generator observed from Formosa. 
 
 ```r
 dataframe <- read.csv(
@@ -1205,7 +1204,7 @@ ggplot(
 ![](final-report_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 
 
-#### only September 
+Only select data in September 
 
 ```r
 sept <- dataframe[1:720,]
@@ -1223,7 +1222,7 @@ ggplot(
 
 ![](final-report_files/figure-html/unnamed-chunk-33-1.png)<!-- -->
 
-#### normalization 
+Normalization 
 
 ```r
 max_value <- max(sept$PAC)
@@ -1238,7 +1237,7 @@ range(dataset)
 ## [1] 0 1
 ```
 
-#### build the model
+Build the model
 
 ```r
 create_dataset <- function(dataset,
@@ -1290,7 +1289,7 @@ dim(trainXY$dataX) <- c(dim_train[1], 1, dim_train[2])
 dim(testXY$dataX) <- c(dim_test[1], 1, dim_test[2])
 ```
 
-#### result
+Result
 
 ```r
 model <- keras_model_sequential()
@@ -1332,7 +1331,7 @@ sprintf(
 ```
 
 ```
-## [1] "Train Score: 26145496208.8026 MSE (161695.6901 RMSE)"
+## [1] "Train Score: 26657716673.7589 MSE (163271.9102 RMSE)"
 ```
 
 ```r
@@ -1343,11 +1342,11 @@ sprintf(
 ```
 
 ```
-## [1] "Test Score: 89394054124.1420 MSE (298988.3846 RMSE)"
+## [1] "Test Score: 84064710277.6804 MSE (289939.1493 RMSE)"
 ```
 
 
-#### visulation of the result
+Visulation of the result
 
 ```r
 trainPredict <- model %>%
@@ -1402,7 +1401,7 @@ mean((trainPredict - mean(trainPredict))^2)
 ```
 
 ```
-## [1] 244689408531
+## [1] 242647735043
 ```
 
 ```r
@@ -1410,7 +1409,7 @@ sqrt(mean((trainPredict - mean(trainPredict))^2))
 ```
 
 ```
-## [1] 494660.9
+## [1] 492592.9
 ```
 
 ```r
@@ -1439,7 +1438,7 @@ cor(trainActual, trainPredict)
 
 ```
 ##           [,1]
-## [1,] 0.9507914
+## [1,] 0.9509221
 ```
 
 ```r
@@ -1476,7 +1475,7 @@ cor(testActual, testPredict)
 
 ```
 ##           [,1]
-## [1,] 0.9605006
+## [1,] 0.9608525
 ```
 
 ```r
@@ -1486,7 +1485,7 @@ abline(a = 0, b = 1)
 
 ![](final-report_files/figure-html/unnamed-chunk-39-1.png)<!-- -->
 
-#### total Formosa data
+Total Formosa data
 
 ```r
 max_value <- max(dataframe$PAC)
@@ -1651,35 +1650,35 @@ for (i in c(1:5)){
 ```
 
 ```
-## [1] "Train Score: 55805811844.0523 MSE (236232.5376 RMSE)"
-## [1] "Test Score: 75215563570.6797 MSE (274254.5598 RMSE)"
+## [1] "Train Score: 54858972759.1227 MSE (234219.9239 RMSE)"
+## [1] "Test Score: 74016328945.0364 MSE (272059.4217 RMSE)"
+##          [,1]
+## [1,] 0.972582
 ##           [,1]
-## [1,] 0.9724591
+## [1,] 0.9277964
+## [1] "Train Score: 54282658224.3956 MSE (232986.3906 RMSE)"
+## [1] "Test Score: 69209801622.9503 MSE (263077.5582 RMSE)"
 ##           [,1]
-## [1,] 0.9273319
-## [1] "Train Score: 54033238715.5027 MSE (232450.5081 RMSE)"
-## [1] "Test Score: 72516289405.1015 MSE (269288.4873 RMSE)"
+## [1,] 0.9730857
 ##           [,1]
-## [1,] 0.9729067
+## [1,] 0.9300894
+## [1] "Train Score: 55074673825.4277 MSE (234679.9391 RMSE)"
+## [1] "Test Score: 76146498960.0570 MSE (275946.5509 RMSE)"
+##         [,1]
+## [1,] 0.97295
 ##           [,1]
-## [1,] 0.9296998
-## [1] "Train Score: 53114828498.6512 MSE (230466.5453 RMSE)"
-## [1] "Test Score: 72347016680.3355 MSE (268974.0074 RMSE)"
+## [1,] 0.9284751
+## [1] "Train Score: 53372821205.9070 MSE (231025.5856 RMSE)"
+## [1] "Test Score: 70963276059.6677 MSE (266389.3317 RMSE)"
 ##           [,1]
-## [1,] 0.9730019
+## [1,] 0.9735146
 ##           [,1]
-## [1,] 0.9282315
-## [1] "Train Score: 52453293322.3251 MSE (229026.8397 RMSE)"
-## [1] "Test Score: 71316942495.0521 MSE (267052.3216 RMSE)"
+## [1,] 0.9288007
+## [1] "Train Score: 54572309829.7806 MSE (233607.1699 RMSE)"
+## [1] "Test Score: 69556492044.3979 MSE (263735.6480 RMSE)"
 ##           [,1]
-## [1,] 0.9733481
+## [1,] 0.9731761
 ##           [,1]
-## [1,] 0.9287825
-## [1] "Train Score: 52331315878.0521 MSE (228760.3897 RMSE)"
-## [1] "Test Score: 73121593815.2157 MSE (270410.0475 RMSE)"
-##           [,1]
-## [1,] 0.9736755
-##           [,1]
-## [1,] 0.9288025
+## [1,] 0.9300705
 ```
 
